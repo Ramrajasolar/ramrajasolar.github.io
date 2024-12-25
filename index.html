@@ -207,6 +207,12 @@
                 submitButton.innerText = "Submit";
                 return;
             }
+            if (!/^\d{10}$/.test(mobile)) {
+                alert("Please enter a valid 10-digit mobile number.");
+                submitButton.disabled = false;
+                submitButton.innerText = "Submit";
+                return;
+            }
 
             if (previousEntries.mobile.includes(mobile)) {
                 alert("This mobile number has already been entered.");
@@ -265,3 +271,5 @@
     </script>
 </body>
 </html>
+
+
