@@ -124,11 +124,11 @@
                 <input type="number" id="electricity" name="electricity" required min="1" step="1">
             </div>
             <div class="form-group">
-                <label>Do you want to enter with a subcity or without a subcity?</label>
-                <input type="radio" id="withSubcity" name="subcityOption" value="subcity" required>
-                <label for="withSubcity">With Subcity</label>
-                <input type="radio" id="withoutSubcity" name="subcityOption" value="withoutSubcity" required>
-                <label for="withoutSubcity">Without Subcity</label>
+                <label>Do you want to enter with a subsidy or without a subsidy?</label>
+                <input type="radio" id="withSubsidy" name="subsidyOption" value="subsidy" required>
+                <label for="withSubsidy">With Subsidy</label>
+                <input type="radio" id="withoutSubsidy" name="subsidyOption" value="withoutSubsidy" required>
+                <label for="withoutSubsidy">Without Subsidy</label>
             </div>
             <div class="social-icons-container">
                 <p>Must Follow</p>
@@ -199,7 +199,7 @@
             const mobile = document.getElementById('mobile').value.trim();
             const address = document.getElementById('address').value.trim();
             const electricity = document.getElementById('electricity').value.trim();
-            const subcityOption = document.querySelector('input[name="subcityOption"]:checked').value;
+            const subsidyOption = document.querySelector('input[name="subsidyOption"]:checked').value;
 
             if (!/^\d+$/.test(electricity)) {
                 alert("Please enter a valid number for Sanctioned Electricity Load.");
@@ -232,7 +232,7 @@
                 mobile,
                 address,
                 electricity,
-                subcityOption,
+                subsidyOption,
                 selectedGift
             };
 
