@@ -71,7 +71,32 @@
             max-width: 200px;
             height: auto;
         }
+        .social-icons-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .social-icons-container p {
+            font-size: 2rem; /* Increased font size */
+            font-weight: bold;
+            margin-bottom: 15px; /* Increased space below the text */
+            color: #333; /* Added a color for better visibility */
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .social-icons a {
+            text-decoration: none;
+            color: #555;
+            font-size: 5.5rem;
+            transition: color 0.3s;
+        }
+        .social-icons a:hover {
+            color: #007bff;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="form-container">
@@ -104,6 +129,17 @@
                 <label for="withSubcity">With Subcity</label>
                 <input type="radio" id="withoutSubcity" name="subcityOption" value="withoutSubcity" required>
                 <label for="withoutSubcity">Without Subcity</label>
+            </div>
+            <div class="social-icons-container">
+                <p>Must Follow</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/ramraja_solarenergy?igsh=NjBtcnJtcXd2cHoy" target="_blank" title="Visit our Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://youtube.com/@ramrajasolarenergy?si=XWu4dlpg-GgaizRr" target="_blank" title="Visit our YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
             </div>
             <button type="submit" class="submit-btn" id="submitButton">Submit</button>
         </form>
@@ -154,7 +190,6 @@
         document.getElementById('luckyDrawForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
-          
             const submitButton = document.getElementById('submitButton');
             submitButton.disabled = true;
             submitButton.innerText = "Submitting...";
@@ -166,7 +201,6 @@
             const electricity = document.getElementById('electricity').value.trim();
             const subcityOption = document.querySelector('input[name="subcityOption"]:checked').value;
 
-            
             if (!/^\d+$/.test(electricity)) {
                 alert("Please enter a valid number for Sanctioned Electricity Load.");
                 submitButton.disabled = false;
@@ -174,7 +208,6 @@
                 return;
             }
 
-            
             if (previousEntries.mobile.includes(mobile)) {
                 alert("This mobile number has already been entered.");
                 submitButton.disabled = false;
@@ -188,7 +221,6 @@
                 return;
             }
 
-            
             previousEntries.mobile.push(mobile);
             previousEntries.email.push(email);
 
@@ -215,7 +247,7 @@
             .then(response => response.json())
             .then(result => {
                 if (result.status === "success") {
-                    document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
+                    document.getElementById('result').innerHTML = Congratulations ${name}! You have won: ${selectedGift};
                     document.getElementById('result').style.display = 'block';
                 } else {
                     alert("Failed to submit data: " + result.message);
@@ -224,7 +256,7 @@
                 submitButton.innerText = "Submit";
             })
             .catch(error => {
-                document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
+                document.getElementById('result').innerHTML = Congratulations ${name}! You have won: ${selectedGift};
                 document.getElementById('result').style.display = 'block';
                 submitButton.disabled = false;
                 submitButton.innerText = "Submit";
