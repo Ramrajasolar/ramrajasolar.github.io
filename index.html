@@ -96,7 +96,7 @@
             </div>
             <div class="form-group">
                 <label for="electricity">Participant's Sanctioned Electricity Load:</label>
-                <input type="text" id="electricity" name="electricity" required>
+                <input type="number" id="electricity" name="electricity" required min="1" step="1">
             </div>
             <div class="form-group">
                 <label>Do you want to enter with a subcity or without a subcity?</label>
@@ -105,10 +105,11 @@
                 <input type="radio" id="withoutSubcity" name="subcityOption" value="withoutSubcity" required>
                 <label for="withoutSubcity">Without Subcity</label>
             </div>
-            <button type="submit" class="submit-btn">Submit</button>
+            <button type="submit" class="submit-btn" id="submitButton">Submit</button>
         </form>
         <div id="result" class="result"></div>
     </div>
+
     <script>
         const gifts = [
             { name: "Free Coffee", probability: 10 },
@@ -132,6 +133,11 @@
             { name: "Mystery Box", probability: 5 }
         ];
 
+        const previousEntries = {
+            mobile: [],
+            email: []
+        };
+
         function selectRandomGift() {
             const totalProbability = gifts.reduce((sum, gift) => sum + gift.probability, 0);
             const randomNum = Math.random() * totalProbability;
@@ -148,12 +154,43 @@
         document.getElementById('luckyDrawForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
+          
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+            submitButton.innerText = "Submitting...";
+
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const mobile = document.getElementById('mobile').value.trim();
             const address = document.getElementById('address').value.trim();
             const electricity = document.getElementById('electricity').value.trim();
             const subcityOption = document.querySelector('input[name="subcityOption"]:checked').value;
+
+            
+            if (!/^\d+$/.test(electricity)) {
+                alert("Please enter a valid number for Sanctioned Electricity Load.");
+                submitButton.disabled = false;
+                submitButton.innerText = "Submit";
+                return;
+            }
+
+            
+            if (previousEntries.mobile.includes(mobile)) {
+                alert("This mobile number has already been entered.");
+                submitButton.disabled = false;
+                submitButton.innerText = "Submit";
+                return;
+            }
+            if (previousEntries.email.includes(email)) {
+                alert("This email address has already been entered.");
+                submitButton.disabled = false;
+                submitButton.innerText = "Submit";
+                return;
+            }
+
+            
+            previousEntries.mobile.push(mobile);
+            previousEntries.email.push(email);
 
             const selectedGift = selectRandomGift();
 
@@ -173,22 +210,26 @@
                 headers: {
                     "Content-Type": "application/json",
                 },
-		mode: "no-cors",
+                mode: "no-cors",
             })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.status === "success") {
-                        document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
-                        document.getElementById('result').style.display = 'block';
-                    } else {
-                        alert("Failed to submit data: " + result.message);
-                    }
-                })
-                .catch(error => {
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === "success") {
                     document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
-                        document.getElementById('result').style.display = 'block';                });
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    alert("Failed to submit data: " + result.message);
+                }
+                submitButton.disabled = false;
+                submitButton.innerText = "Submit";
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
+                document.getElementById('result').style.display = 'block';
+                submitButton.disabled = false;
+                submitButton.innerText = "Submit";
+            });
         });
     </script>
 </body>
 </html>
-
