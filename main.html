@@ -13,7 +13,7 @@
         }
         .form-container {
             max-width: 500px;
-            margin: 0 auto; 
+            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -23,10 +23,6 @@
             text-align: center;
             font-size: 3.5rem;
             margin-bottom: 15px;
-            margin-top :5px ;
-            white-space: nowrap ;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         .form-group {
             margin-bottom: 15px;
@@ -69,11 +65,11 @@
             font-size: 16px;
             display: none;
         }
-        .logo{
+        .logo {
             display: block;
-            margin:0 auto 1px;
+            margin: 0 auto 20px;
             max-width: 200px;
-            height: auto ;
+            height: auto;
         }
     </style>
 </head>
@@ -113,8 +109,6 @@
         </form>
         <div id="result" class="result"></div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-
     <script>
         const gifts = [
             { name: "Free Coffee", probability: 10 },
@@ -137,6 +131,7 @@
             { name: "Free Accessory", probability: 5 },
             { name: "Mystery Box", probability: 5 }
         ];
+
         function selectRandomGift() {
             const totalProbability = gifts.reduce((sum, gift) => sum + gift.probability, 0);
             const randomNum = Math.random() * totalProbability;
@@ -149,50 +144,51 @@
                 }
             }
         }
-        if (!window.sheetData) {
-            window.sheetData = [
-                ["Name", "Email", "Mobile", "Address", "Electricity Load", "Subcity Option", "Gift"]
-            ];
-        }
-        document.getElementById('luckyDrawForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const mobile = document.getElementById('mobile').value;
-            const address = document.getElementById('address').value;
-            const electricity = document.getElementById('electricity').value;
-            const subcityOption = document.querySelector('input[name="subcityOption"]:checked').value;
-            const nameRegex = /^[A-Za-z\s]+$/;
-            if (!nameRegex.test(name)) {
-                alert("Please enter a valid name (letters and spaces only).");
-                return;
-            }
-            const mobileRegex = /^\d{10}$/;
-            if (!mobileRegex.test(mobile)) {
-                alert("Please enter a valid 10-digit mobile number.");
-                return;
-            }
-            const selectedGift = selectRandomGift();
-            const newRow = [name, email, mobile, address, electricity, subcityOption, selectedGift];
-            window.sheetData.push(newRow);
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(window.sheetData);
-            XLSX.utils.book_append_sheet(wb, ws, "Lucky Draw Entries");
-            const excelFile = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-            const buffer = new ArrayBuffer(excelFile.length);
-            const view = new Uint8Array(buffer);
-            for (let i = 0; i < excelFile.length; i++) {
-                view[i] = excelFile.charCodeAt(i) & 0xff;
-            }
 
-            const blob = new Blob([buffer], { type: 'application/octet-stream' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `lucky_draw_entries.xlsx`;  
-            a.click();
-            document.getElementById('result').innerText = `Congratulations ${name}! You have won: ${selectedGift}`;
-            document.getElementById('result').style.display = 'block';
+        document.getElementById('luckyDrawForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const electricity = document.getElementById('electricity').value.trim();
+            const subcityOption = document.querySelector('input[name="subcityOption"]:checked').value;
+
+            const selectedGift = selectRandomGift();
+
+            const data = {
+                name,
+                email,
+                mobile,
+                address,
+                electricity,
+                subcityOption,
+                selectedGift
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbwE1l_vwgu1x189lnKQgDbk9i5Ceeh8MqWu46k9agn0a3664emi-2PaYlvbN0hEQ-RjuA/exec", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+		mode: "no-cors",
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === "success") {
+                        document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
+                        document.getElementById('result').style.display = 'block';
+                    } else {
+                        alert("Failed to submit data: " + result.message);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
+                        document.getElementById('result').style.display = 'block';                });
         });
     </script>
 </body>
 </html>
+
