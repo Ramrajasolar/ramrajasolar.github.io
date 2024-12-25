@@ -247,7 +247,7 @@
             .then(response => response.json())
             .then(result => {
                 if (result.status === "success") {
-                    document.getElementById('result').innerHTML = Congratulations ${name}! You have won: ${selectedGift};
+                    document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
                     document.getElementById('result').style.display = 'block';
                 } else {
                     alert("Failed to submit data: " + result.message);
@@ -256,7 +256,7 @@
                 submitButton.innerText = "Submit";
             })
             .catch(error => {
-                document.getElementById('result').innerHTML = Congratulations ${name}! You have won: ${selectedGift};
+                document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
                 document.getElementById('result').style.display = 'block';
                 submitButton.disabled = false;
                 submitButton.innerText = "Submit";
