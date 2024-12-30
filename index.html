@@ -12,13 +12,17 @@
             background-color: #f4f4f9;
         }
         .form-container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Aligns content horizontally in the center */
+        justify-content: center; /* Aligns content vertically in the center */
+    }
         .form-container h2 {
             text-align: center;
             font-size: 3.5rem;
@@ -43,17 +47,22 @@
             margin-right: 10px;
         }
         .submit-btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
+        width: 100%; /* Adjust width to match form-container if needed */
+        max-width: 300px; /* Optional: limit maximum width */
+        padding: 15px; /* Adjust padding for a more prominent button */
+        background-color: #007bff; /* Button background */
+        color: #fff; /* Text color */
+        border: none; /* Remove borders */
+        border-radius: 5px; /* Rounded edges */
+        cursor: pointer; /* Pointer cursor */
+        text-align: center; /* Center the text */
+        font-size: 1.2rem; /* Increase font size */
+        margin-top: 20px; /* Add spacing from previous elements */
+        transition: background-color 0.3s;
+    }
+    .submit-btn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
         .result {
             margin-top: 20px;
             padding: 15px;
@@ -71,30 +80,7 @@
             max-width: 200px;
             height: auto;
         }
-        .social-icons-container {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .social-icons-container p {
-            font-size: 2rem; /* Increased font size */
-            font-weight: bold;
-            margin-bottom: 15px; /* Increased space below the text */
-            color: #333; /* Added a color for better visibility */
-        }
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .social-icons a {
-            text-decoration: none;
-            color: #555;
-            font-size: 5.5rem;
-            transition: color 0.3s;
-        }
-        .social-icons a:hover {
-            color: #007bff;
-        }
+       
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -103,46 +89,16 @@
         <img src="LOGO.jpg" alt="Company Logo" class="logo">
         <h2>Lucky Draw</h2>
         <form id="luckyDrawForm">
-            <div class="form-group">
-                <label for="name">Participant's Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Participant's Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+          
             <div class="form-group">
                 <label for="mobile">Participant's Mobile Number:</label>
                 <input type="tel" id="mobile" name="mobile" required>
             </div>
-            <div class="form-group">
-                <label for="address">Participant's Address:</label>
-                <input type="text" id="address" name="address" required>
-            </div>
-            <div class="form-group">
-                <label for="electricity">Participant's Sanctioned Electricity Load:</label>
-                <input type="number" id="electricity" name="electricity" required min="1" step="1">
-            </div>
-            <div class="form-group">
-                <label>Do you want to enter with a subsidy or without a subsidy?</label>
-                <input type="radio" id="withSubsidy" name="subsidyOption" value="subsidy" required>
-                <label for="withSubsidy">With Subsidy</label>
-                <input type="radio" id="withoutSubsidy" name="subsidyOption" value="withoutSubsidy" required>
-                <label for="withoutSubsidy">Without Subsidy</label>
-            </div>
-            <div class="social-icons-container">
-                <p>Must Follow</p>
-                <div class="social-icons">
-                    <a href="https://www.instagram.com/ramraja_solarenergy?igsh=NjBtcnJtcXd2cHoy" target="_blank" title="Visit our Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://youtube.com/@ramrajasolarenergy?si=XWu4dlpg-GgaizRr" target="_blank" title="Visit our YouTube">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                </div>
-            </div>
+            
             <button type="submit" class="submit-btn" id="submitButton">Submit</button>
         </form>
+            </div>
+           
         <div id="result" class="result"></div>
     </div>
 
@@ -194,19 +150,12 @@
             submitButton.disabled = true;
             submitButton.innerText = "Submitting...";
 
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
+           
+            
             const mobile = document.getElementById('mobile').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const electricity = document.getElementById('electricity').value.trim();
-            const subsidyOption = document.querySelector('input[name="subsidyOption"]:checked').value;
-
-            if (!/^\d+$/.test(electricity)) {
-                alert("Please enter a valid number for Sanctioned Electricity Load.");
-                submitButton.disabled = false;
-                submitButton.innerText = "Submit";
-                return;
-            }
+ 
+      
+            
             if (!/^\d{10}$/.test(mobile)) {
                 alert("Please enter a valid 10-digit mobile number.");
                 submitButton.disabled = false;
@@ -220,25 +169,18 @@
                 submitButton.innerText = "Submit";
                 return;
             }
-            if (previousEntries.email.includes(email)) {
-                alert("This email address has already been entered.");
-                submitButton.disabled = false;
-                submitButton.innerText = "Submit";
-                return;
-            }
+          
 
             previousEntries.mobile.push(mobile);
-            previousEntries.email.push(email);
+           
 
             const selectedGift = selectRandomGift();
 
             const data = {
-                name,
-                email,
+               
+            
                 mobile,
-                address,
-                electricity,
-                subsidyOption,
+                
                 selectedGift
             };
 
@@ -253,7 +195,7 @@
             .then(response => response.json())
             .then(result => {
                 if (result.status === "success") {
-                    document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
+                    document.getElementById('result').innerHTML = `Congratulations ! You have won: ${selectedGift}`;
                     document.getElementById('result').style.display = 'block';
                 } else {
                     alert("Failed to submit data: " + result.message);
@@ -262,7 +204,7 @@
                 submitButton.innerText = "Submit";
             })
             .catch(error => {
-                document.getElementById('result').innerHTML = `Congratulations ${name}! You have won: ${selectedGift}`;
+                document.getElementById('result').innerHTML = `Congratulations ! You have won: ${selectedGift}`;
                 document.getElementById('result').style.display = 'block';
                 submitButton.disabled = false;
                 submitButton.innerText = "Submit";
