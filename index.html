@@ -109,7 +109,7 @@
             </div>
             <div class="form-group">
                 <label for="email">Participant's Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email">
             </div>
             <div class="form-group">
                 <label for="mobile">Participant's Mobile Number:</label>
@@ -171,7 +171,7 @@
 
         const previousEntries = {
             mobile: [],
-            email: []
+           
         };
 
         function selectRandomGift() {
@@ -220,15 +220,10 @@
                 submitButton.innerText = "Submit";
                 return;
             }
-            if (previousEntries.email.includes(email)) {
-                alert("This email address has already been entered.");
-                submitButton.disabled = false;
-                submitButton.innerText = "Submit";
-                return;
-            }
+           
 
             previousEntries.mobile.push(mobile);
-            previousEntries.email.push(email);
+           
 
             const selectedGift = selectRandomGift();
 
